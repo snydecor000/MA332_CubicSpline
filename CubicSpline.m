@@ -51,11 +51,15 @@ for i = 2 : length(deltax)-1
     A(i-1,i) = deltax(i);
 end
 
+B = zeros(1,length(y)-2);
+for i = 2 : length(y)-1
+    B(i-1) = 6*((y(i+1)-y(i))/deltax(i)-(y(i)-y(i-1))/deltax(i-1));
+end
+
 % Solve the system of equations for the second derivative values
-s = TDMS(A,y);
+s = TDMS(A,B);
 % Set the second derivative to be 0 for the first and last points
 s = [0 s 0];
-
 % Loop through and solve for the coeffs for each cubic equation based on
 % the second derivative values
 coeffs = zeros(length(x)-2,4);
@@ -66,7 +70,6 @@ for i = 1 : length(y)-1
     coeffs(i,3) = s(i)/2;
     coeffs(i,4) = (s(i+1)-s(i))/(6*deltax(i));
 end
-%disp(coeffs);
 
 % Code that will evauate each v point
 for q = 1:length(v)
