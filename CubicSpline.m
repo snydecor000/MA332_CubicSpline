@@ -1,9 +1,9 @@
-function z = CubicSpline(x,y,v)
+function z = CubicSpline(x,y,v,loud)
 %CUBICSPLINE takes points on the xy plane, and synthesizes a natural cubic
 %spline which is then evaluated at a number of x coordinates to produce a
 %vector of output values
 %   
-%   z = CUBICSPLINE(x,y,v)
+%   z = CUBICSPLINE(x,y,v,loud)
 %
 %   x and y are parallel row or column vectors that define the (x,y) points
 %   on which the cubic spline is created. The (x,y) points can be in any
@@ -11,6 +11,9 @@ function z = CubicSpline(x,y,v)
 %
 %   v is an optional argument of x coordinates where the cublic spline will
 %   be evaluated. It too can be a row or column vector
+%
+%   loud = 1 can be used to output the coefficient matrix for the cubic
+%   equations and make generic plot of the results.  
 %
 %   z is the resulting vector from evaluating the cublic spline at the 
 %   locations in v
@@ -55,6 +58,11 @@ function z = CubicSpline(x,y,v)
 %   etc...
 %
 %   2020 Cory Snyder
+
+% Default loud to 0 if the user does not specify it
+if ~exist('loud','var')
+    loud = 0;
+end
 
 % If x or y are column vectors, transpose them into row vectors
 [rows,cols] = size(x);
@@ -141,18 +149,29 @@ for q = 1:length(v)
     end
 end
 
-% Plot the results 
-figure(1);
+% If loud is on, output the coefficients matrix in the console and plot it
+if(loud == 1)
+    fprintf('a\t\tb\t\tc\t\td\n');
+    for i = 1 : length(coeffs(:,1))
+        fprintf([num2str(coeffs(i,1),'%.4f') '\t'...
+                 num2str(coeffs(i,2),'%.4f') '\t'...
+                 num2str(coeffs(i,3),'%.4f') '\t'...
+                 num2str(coeffs(i,4),'%.4f') '\n']);
+    end
+    
+    % Plot the results 
+    figure(1);
 
-hold on;
-plot(x,y,'o');
-plot(v,z);
+    hold on;
+    plot(x,y,'o');
+    plot(v,z);
 
-grid on;
-title('Resulting Cubic Spline');
-legend('Original Points','Cubic Spline');
-xlabel('x');
-ylabel('y    ','Rotation',0);
-hold off;
+    grid on;
+    title('Resulting Cubic Spline');
+    legend('Original Points','Cubic Spline');
+    xlabel('x');
+    ylabel('y    ','Rotation',0);
+    hold off;
+end
 end
 
