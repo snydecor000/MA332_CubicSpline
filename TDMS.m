@@ -1,6 +1,13 @@
 function [x] = TDMS(A,b)
 %TDMS Summary of this function goes here
 %   Detailed explanation goes here
+%
+%
+%
+%
+%
+%
+%   2020 Cherise McMahon
 
 % Initialize U and L and find the size of A
 [n,z] = size(A);
@@ -13,10 +20,10 @@ for i = 1 : n-1
     U(i+1,:) = U(i+1,:) - (L(i+1,i)*U(i,:));
 end
 
-% Initialize the output x
-y = zeros(1,n);
+
 % Ly=b
 % Solve the L matrix for the output values using forward substitution
+y = zeros(1,n);
 y(1) = b(1);
 for i = 2 : n
     y(i) = b(i) - (L(i,i-1)*y(i-1));
