@@ -142,12 +142,14 @@ for q = 1:length(v)
 end
 
 % Plot the results 
-close 1;
-figure(1)
+figure(1);
+
 hold on;
-title('Resulting Cubic Spline');
 plot(x,y,'o');
 plot(v,z);
+
+grid on;
+title('Resulting Cubic Spline');
 legend('Original Points','Cubic Spline');
 xlabel('x');
 ylabel('y    ','Rotation',0);
